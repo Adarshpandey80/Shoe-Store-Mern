@@ -1,9 +1,102 @@
-import React from 'react'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, User, Search, Menu, X } from "lucide-react";
 
-function Navbar() {
+const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div>Navbar</div>
-  )
-}
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200">
+      <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-export default Navbar
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-extrabold tracking-wider"
+        >
+          SNEAK<span className="text-yellow-600">R</span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex gap-10 font-medium text-gray-700">
+          <li>
+            <Link
+              to="/men"
+              className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+            >
+              Men
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/women"
+              className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+            >
+              Women
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/new"
+              className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+            >
+              New Drops
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/sale"
+              className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+            >
+              Sale
+            </Link>
+          </li>
+        </ul>
+
+        {/* Icons */}
+        <div className="hidden md:flex items-center gap-6">
+          <Search className="w-5 h-5 cursor-pointer" />
+
+          <Link to="/account">
+            <User className="w-5 h-5 cursor-pointer" />
+          </Link>
+
+          <Link to="/cart" className="relative">
+            <ShoppingBag className="w-5 h-5 cursor-pointer" />
+            <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1.5 rounded-full">
+              3
+            </span>
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X /> : <Menu />}
+        </button>
+      </nav>
+
+      {/* Mobile Menu */}
+      {open && (
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <ul className="flex flex-col items-center gap-6 py-6 font-medium">
+            <Link to="/men" onClick={() => setOpen(false)}>Men</Link>
+            <Link to="/women" onClick={() => setOpen(false)}>Women</Link>
+            <Link to="/new" onClick={() => setOpen(false)}>New Drops</Link>
+            <Link to="/sale" onClick={() => setOpen(false)}>Sale</Link>
+
+            <div className="flex gap-6">
+              <Link to="/search"><Search /></Link>
+              <Link to="/account"><User /></Link>
+              <Link to="/cart"><ShoppingBag /></Link>
+            </div>
+          </ul>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Navbar;
