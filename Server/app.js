@@ -3,11 +3,19 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors")
 const Productroute = require("./routes/productRoute")
+const bodyparser = require("body-parser")
 
-
+mongoose.connect('mongodb://127.0.0.1:27017/shoeWebsite').then(() => {
+    console.log("Connected to MongoDB");
+}).catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+});
 
 app.use(cors());
-app.use("/product" , Productroute)
+app.use("/products" , Productroute)
+// Body-parser middleware
+app.use(bodyparser.urlencoded({ extended: true }))
+app.use(bodyparser.json())
 
 
 

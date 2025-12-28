@@ -1,0 +1,150 @@
+import React from 'react'
+import { useState } from 'react';
+import axios from 'axios';
+
+function ProductList() {
+    
+    const [product, setProduct] = useState({});
+   const [images , setImages] = useState([]);
+
+ const handleChange = (e) => {
+  const { name, type, value, files } = e.target;
+
+  if (type === "file") {
+    setImages(files); // FileList
+  } else {
+    setProduct({
+      ...product,
+      [name]: value,
+    });
+  }
+};
+
+    const handleSubmit = async(e)=>{
+    e.preventDefault();
+    let api = 'http://localhost:8000/products/listProducts';
+    let formData = new FormData();
+    for(let key in product){
+        formData.append(key , product[key]); 
+    }
+    for(let i=0; i<images.length; i++){
+        formData.append('images' , images[i]);
+    }
+      const response = await axios.post(api , formData );
+      console.log(response);
+  
+  }
+
+     
+   
+  return (
+   <>
+     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 space-y-6"
+      >
+        <h2 className="text-2xl font-bold text-gray-800">
+          Add New Product
+        </h2>
+
+        {/* Product Name */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Product Name
+          </label>
+          <input
+            type="text"
+            name="name"
+           
+            onChange={handleChange}
+            placeholder="Nike Air Zoom Pegasus"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black outline-none"
+            required
+          />
+        </div>
+
+        {/* Category + Price */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Category
+            </label>
+            <select
+              name="category"
+            
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black outline-none"
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="running">Running</option>
+              <option value="casual">Casual</option>
+              <option value="basketball">Basketball</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Price (₹)
+            </label>
+            <input
+              type="number"
+              name="price"
+             
+              onChange={handleChange}
+              placeholder="12999"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black outline-none"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+       
+            onChange={handleChange}
+            rows="4"
+            placeholder="Premium lightweight running shoes..."
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black outline-none"
+            required
+          />
+        </div>
+
+        {/* Image URLs */}
+      <div className="mb-4">
+  <label className="block text-sm font-medium text-gray-600 mb-2">
+    Product Images
+  </label>
+  <input
+    type="file"
+    name='images'
+    onChange={handleChange}
+    multiple
+    required
+    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+  />
+  <p className='text-xs text-gray-500'>Choose multiple images  </p>
+</div>
+
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all"
+        >
+          Save Product
+        </button>
+      </form>
+    </div>
+   </>
+  )
+}
+
+
+export default ProductList

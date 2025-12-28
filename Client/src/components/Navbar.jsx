@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBag, User, Search, Menu, X } from "lucide-react";
+import { useSelector } from "react-redux";
+
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.cartItem);
+
+   let totalitem = 0;
+  cartItems.forEach((item) => {
+    totalitem += item.qnty;
+  });
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200">
@@ -14,7 +23,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-extrabold tracking-wider"
         >
-          SNEAK<span className="text-yellow-600">R</span>
+          SNEAK<span className="text-yellow-400">R</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -64,7 +73,7 @@ const Navbar = () => {
           <Link to="/cart" className="relative">
             <ShoppingBag className="w-5 h-5 cursor-pointer" />
             <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1.5 rounded-full">
-              3
+              {totalitem}
             </span>
           </Link>
         </div>
@@ -82,10 +91,34 @@ const Navbar = () => {
       {open && (
         <div className="md:hidden bg-white border-t border-gray-200">
           <ul className="flex flex-col items-center gap-6 py-6 font-medium">
-            <Link to="/men" onClick={() => setOpen(false)}>Men</Link>
-            <Link to="/women" onClick={() => setOpen(false)}>Women</Link>
-            <Link to="/new" onClick={() => setOpen(false)}>New Drops</Link>
-            <Link to="/sale" onClick={() => setOpen(false)}>Sale</Link>
+            <Link 
+              to="/men" 
+              onClick={() => setOpen(false)}
+              className="relative after:absolute after:w-full after:h-[2px] after:bg-black after:left-0 after:-bottom-1"
+            >
+              Men
+            </Link>
+            <Link 
+              to="/women" 
+              onClick={() => setOpen(false)}
+              className="relative after:absolute after:w-full after:h-[2px] after:bg-black after:left-0 after:-bottom-1"
+            >
+              Women
+            </Link>
+            <Link 
+              to="/new" 
+              onClick={() => setOpen(false)}
+              className="relative after:absolute after:w-full after:h-[2px] after:bg-black after:left-0 after:-bottom-1"
+            >
+              New Drops
+            </Link>
+            <Link 
+              to="/sale" 
+              onClick={() => setOpen(false)}
+              className="relative after:absolute after:w-full after:h-[2px] after:bg-black after:left-0 after:-bottom-1"
+            >
+              Sale
+            </Link>
 
             <div className="flex gap-6">
               <Link to="/search"><Search /></Link>
@@ -100,3 +133,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

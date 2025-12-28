@@ -5,7 +5,9 @@ function Header() {
    <>
      <div className="w-full bg-black text-white text-sm py-2 px-4 flex justify-center items-center">
       <p className="tracking-wide">
-        🔥 Free Shipping on orders over ₹999 | New Drops Available
+        <marquee behavior="" direction="">
+          🎉 Summer Sale is Live! Up to 50% off on selected styles. Shop Now! 🎉
+        </marquee>
       </p>
     </div>
    </>
