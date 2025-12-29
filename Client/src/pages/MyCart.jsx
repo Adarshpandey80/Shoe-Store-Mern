@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { increaseQty, decreaseQty, removeItem } from "../cartSlice";
+import { useNavigate } from "react-router-dom";
 
 function MyCart() {
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.cartItem);
   const dispatch = useDispatch();
 
@@ -95,8 +97,11 @@ function MyCart() {
                     Total Amount: ₹{totalAmount}
                 </h2>
 
-                <button className="mt-4 bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition">
+                <button className="mt-4 bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition" 
+                 onClick={() => navigate('/checkout')}
+                >
                     Proceed to Checkout
+
                 </button>
 
             </div>

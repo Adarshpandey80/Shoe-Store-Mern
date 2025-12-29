@@ -4,6 +4,9 @@ const app = express();
 const cors = require("cors")
 const Productroute = require("./routes/productRoute")
 const bodyparser = require("body-parser")
+const paymentRoute = require('./routes/paymentRoute');
+
+require('dotenv').config();
 
 mongoose.connect('mongodb://127.0.0.1:27017/shoeWebsite').then(() => {
     console.log("Connected to MongoDB");
@@ -12,10 +15,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/shoeWebsite').then(() => {
 });
 
 app.use(cors());
-app.use("/products" , Productroute)
 // Body-parser middleware
 app.use(bodyparser.urlencoded({ extended: true }))
-app.use(bodyparser.json())
+app.use(bodyparser.json());
+
+
+
+
+
+app.use("/products" , Productroute)
+app.use('/payment', paymentRoute);
+
+
+
 
 
 

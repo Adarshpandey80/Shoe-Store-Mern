@@ -11,7 +11,7 @@ function RecentProduct() {
     }, []);
     
     const api =  `http://localhost:8000/products/image/${productIds}`;
-}
+
   return (
    <>
     <div className="max-w-7xl mx-auto px-6 py-10">
@@ -53,5 +53,6 @@ function RecentProduct() {
    </>
   )
 }
+
 
 export default RecentProduct
