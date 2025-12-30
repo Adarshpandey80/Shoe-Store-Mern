@@ -72,6 +72,19 @@ const getProductInfo = async (req, res) => {
     }
 }
 
+const getRecentProductInfo =  async (req, res) => {
+    const productId = req.params.id;
+    try {
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            return res.status(404).send("Product not found");
+        }
+        res.status(200).send(product);
+    } catch (error) {
+        res.status(500).send("Error retrieving product: " + error.message);
+    }
+}
+
 
 
 
@@ -79,5 +92,6 @@ const getProductInfo = async (req, res) => {
 module.exports = {
     addProducts,
     showProductsList,
-    getProductInfo
+    getProductInfo,
+    getRecentProductInfo
 }

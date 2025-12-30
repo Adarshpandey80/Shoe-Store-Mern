@@ -4,6 +4,9 @@ import {useSelector , useDispatch} from 'react-redux';
 import { addToCart } from "../cartSlice";
 import { Link } from "react-router-dom";
 import Carousel from "../pages/Carousel";
+import BuyNow from "../btnComponents/BuyNow";
+import AddToCard from "../btnComponents/AddToCard";
+import RecentProduct from "../pages/RecentProduct";
 
 function Home() {
   const [data, setData] = useState([]);
@@ -34,7 +37,6 @@ function Home() {
   if (!storedIds.includes(id)) {
     storedIds.push(id);
   }
-
   // save back to localStorage
   localStorage.setItem("productIds", JSON.stringify(storedIds));
 };
@@ -43,6 +45,10 @@ function Home() {
   return (
     <>
     <Carousel/>
+    
+      <RecentProduct/>
+    
+
     <div className="bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-center py-6">
         Latest Shoes Collection
@@ -87,18 +93,11 @@ function Home() {
 
               {/* Buttons */}
               <div className="flex gap-3">
-                <button
-                  className="flex-1 bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 transition"
-                >
-                  Buy Now
-                </button>
+               
+                <BuyNow product ={item}/>
+                <AddToCard product ={item}/>
 
-                <button
-                  className="flex-1 border border-black text-black py-2 rounded-lg font-medium hover:bg-black hover:text-white transition"
-                  onClick={() => dispatch(addToCart({_id:item._id, name:item.name, description:item.description, category:item.category,  image:item.defaultImage, price:item.price, qnty:1}))}
-                >
-                  Add to Cart
-                </button>
+                
               </div>
             </div>
           </div>

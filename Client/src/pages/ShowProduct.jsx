@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector , useDispatch } from "react-redux";
-import { addToCart } from "../cartSlice";
+import { addToCart , buyNow } from "../cartSlice";
+import { useNavigate } from "react-router-dom";
+import BuyNow from "../btnComponents/BuyNow";
+import AddToCard from "../btnComponents/AddToCard";
+
 
 function ShowProduct() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const cartItem = useSelector((state) => state.cart.cartItem);
 
@@ -32,7 +37,14 @@ function ShowProduct() {
         return <p className="text-center mt-10">Loading...</p>;
     }
 
+
+
+
     return (
+        <>
+        
+        
+      
         <div className="max-w-7xl mx-auto px-6 py-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
@@ -84,16 +96,10 @@ function ShowProduct() {
 
                     {/* Buttons */}
                     <div className="flex gap-4 pt-4">
-                        <button className="flex-1 bg-black text-white py-3 rounded-lg text-lg font-medium hover:bg-gray-800 transition">
-                            Buy Now
-                        </button>
+                       
+                        <BuyNow product ={product}/>
+                        <AddToCard product ={product}/>
 
-                        <button className="flex-1 border border-black text-black py-3 rounded-lg text-lg font-medium hover:bg-black hover:text-white transition" 
-                        
-                        onClick={() => dispatch(addToCart({_id:product._id, name:product.name, description:product.description, category:product.category,  image:product.defaultImage, price:product.price, qnty:1}))}
-                        >
-                            Add to Cart
-                        </button>
                     </div>
 
                     {/* Extra Info */}
@@ -105,6 +111,7 @@ function ShowProduct() {
                 </div>
             </div>
         </div>
+         </>
     );
 }
 

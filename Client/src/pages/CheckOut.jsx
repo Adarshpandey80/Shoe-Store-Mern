@@ -1,13 +1,25 @@
 import { useSelector } from "react-redux";
 import axios from "axios";
+import {clearBuyNow} from "../cartSlice";
+import { useDispatch } from "react-redux";
 const CheckOut = () => {
+  const dispatch = useDispatch();
   const myCart = useSelector((state) => state.cart.cartItem);
+  const buyNowItem = useSelector((state) => state.cart.buyNowItem);
+
+  // if(buyNowItem){
+  //   myCart.length=0;
+  //   myCart.push(buyNowItem);
+  // }
+  
+  // decide source
+const itemsToShow = buyNowItem ? [buyNowItem] : myCart;
 
   let totalAmount = 0;
     let proName="";
     let proImg="";
 
-  myCart.forEach((item) => {
+  itemsToShow.forEach((item) => {
        totalAmount += item.price * item.qnty;
        proName+=item.name+", ";
         proImg=item.image;
@@ -27,6 +39,7 @@ const CheckOut = () => {
       try {
         const verifyURL = "http://localhost:8080/payment/verify";
         const {data} = await axios.post(verifyURL,response);
+        dispatch(clearBuyNow());
       } catch(error) {
         console.log(error);
       }
@@ -62,7 +75,7 @@ const CheckOut = () => {
         
         {/* LEFT: PRODUCT LIST */}
         <div className="md:col-span-2 space-y-4">
-          {myCart.map((item, index) => (
+          {itemsToShow.map((item, index) => (
             <div
               key={index}
               className="bg-white rounded-2xl shadow-md p-4 flex gap-4"

@@ -1,55 +1,85 @@
 import React from 'react'
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+
 
 function RecentProduct() {
     
     const [productIds, setProductIds] = useState([]);
+    const [recentProducts, setRecentProducts] = useState([]);
+
 
     useEffect(() => {
         const ids = JSON.parse(localStorage.getItem("productIds")) || [];
         setProductIds(ids);
+         console.log(productIds);
+        recentProduct();
     }, []);
+
+      
+ 
     
-    const api =  `http://localhost:8000/products/image/${productIds}`;
+  const recentProduct = async()=>{
+        productIds.map(async(id)=>{
+            try {
+                const response = await axios.get(`http://localhost:8000/products/recent/${id}`);
+                console.log(response.data);
+                setRecentProducts((prevProducts) => [...prevProducts, response.data]);
+              
+            } catch (error) {
+                console.error("Error fetching product data:", error);
+            }
+        })
+  }
 
   return (
    <>
-    <div className="max-w-7xl mx-auto px-6 py-10">
-        <h1 className="text-3xl font-bold text-center py-6">
-        Recently Viewed Products
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-6 pb-10">
-        {productIds.length === 0 ? (
-            <p className="text-center col-span-full">No recently viewed products.</p>
-        ) : (
-            productIds.map((id) => (
-            <div
-                key={id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
-            >
-                {/* Image */}
-                <div className="overflow-hidden rounded-t-2xl">
-                <img
-                    src={`http://localhost:8000/products/image/${id}`} // Adjust the URL as needed
-                    alt="Recently Viewed Product"
+    {/* <div className="bg-gray-50 min-h-screen">
+  <h1 className="text-3xl font-bold text-center py-6">
+    Recently Viewed Products
+  </h1>
 
+  <div className="px-6 pb-10">
+    <Carousel className="w-full max-w-7xl mx-auto">
+      <CarouselContent>
+        {recentProducts.map((item) => (
+          <CarouselItem
+            key={item._id}
+            className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+          >
+            <div className="bg-white shadow-md rounded-lg overflow-hidden mx-2">
+              <img
+                src={item.defaultImage}
+                alt={item.name}
+                className="w-full h-48 object-cover"
+              />
 
-                    className="w-full h-56 object-cover hover:scale-110 transition-transform duration-500"
-                />
+              <div className="p-4">
+                <h2 className="text-lg font-semibold mb-2">
+                  {item.name}
+                </h2>
+
+                <p className="text-gray-600 mb-4 line-clamp-2">
+                  {item.description}
+                </p>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-xl font-bold">
+                    ₹{item.price}
+                  </span>
                 </div>
-
-                {/* Content */}
-                <div className="p-5">
-                <h2 className="text-lg font-semibold mb-2">Product Name</h2>
-                <p className="text-gray-600 mb-4">Brief description of the product.</p>
-                <span className="text-xl font-bold text-black">$99.99</span>
-                </div>
+              </div>
             </div>
-            ))
-        )}
-        </div>
-    </div>  
-   
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  </div>
+</div> */}
    </>
   )
 }
