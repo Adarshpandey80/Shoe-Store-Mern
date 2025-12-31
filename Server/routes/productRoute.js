@@ -6,5 +6,6 @@ route.post("/listProducts" , productController.addProducts)
 route.get("/showProducts" , productController.showProductsList)
 route.get("/:id" , productController.getProductInfo)
 route.get("/recent/:id" , productController.getRecentProductInfo)
+route.get("/related/:category" , productController.getRelatedProducts)
 
 module.exports = route;

@@ -9,6 +9,7 @@ import ShowProduct from './pages/ShowProduct.jsx'
 import Carousel from './pages/Carousel.jsx'
 import CheckOut from './pages/CheckOut.jsx'
 
+
 function App() {
   return (
     <>
@@ -21,6 +22,7 @@ function App() {
                  <Route path='/product/:id' element={ <ShowProduct/> } />
                  <Route path='/carousel' element={ <Carousel/> } />
                  <Route path='/checkout' element={ <CheckOut/> } />
+                 
            </Route>
        </Routes>
        </BrowserRouter>

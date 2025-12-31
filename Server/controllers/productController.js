@@ -85,6 +85,15 @@ const getRecentProductInfo =  async (req, res) => {
     }
 }
 
+const getRelatedProducts = async (req,res) =>{
+    try {
+        const category = req.params.category;
+        const relatedProducts = await ProductModel.find({ category: category });
+        res.status(200).send(relatedProducts);
+    } catch (error) {
+        res.status(500).send("Error retrieving related products: " + error.message);
+    }
+}
 
 
 
@@ -93,5 +102,6 @@ module.exports = {
     addProducts,
     showProductsList,
     getProductInfo,
-    getRecentProductInfo
+    getRecentProductInfo,
+    getRelatedProducts
 }

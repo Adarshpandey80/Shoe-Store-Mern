@@ -6,14 +6,13 @@ const CheckOut = () => {
   const dispatch = useDispatch();
   const myCart = useSelector((state) => state.cart.cartItem);
   const buyNowItem = useSelector((state) => state.cart.buyNowItem);
+  const checkOutSource = useSelector((state) => state.cart.checkOutSource);
 
-  // if(buyNowItem){
-  //   myCart.length=0;
-  //   myCart.push(buyNowItem);
-  // }
+  
   
   // decide source
-const itemsToShow = buyNowItem ? [buyNowItem] : myCart;
+
+ const itemsToShow = checkOutSource === "buyNow" && buyNowItem ? [buyNowItem] : myCart;
 
   let totalAmount = 0;
     let proName="";

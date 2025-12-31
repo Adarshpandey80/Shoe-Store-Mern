@@ -72,7 +72,6 @@ function ProductList() {
             </label>
             <select
               name="category"
-            
               onChange={handleChange}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black outline-none"
               required

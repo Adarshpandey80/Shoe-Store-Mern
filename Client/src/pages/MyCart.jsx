@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increaseQty, decreaseQty, removeItem } from "../cartSlice";
-import { useNavigate } from "react-router-dom";
+import { increaseQty, decreaseQty, removeItem  , checkOutFromCart} from "../cartSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 function MyCart() {
   const navigate = useNavigate();
@@ -12,6 +12,12 @@ function MyCart() {
   cartItems.forEach((item) => {
     totalAmount += item.price * item.qnty;
   });
+
+  const checkout = ()=>{
+    dispatch(checkOutFromCart());
+    navigate("/checkout");
+  }
+
 
   return (
     <>
@@ -24,8 +30,10 @@ function MyCart() {
           Your cart is empty 🛒
         </div>
       ) : (
+        
         <div className="space-y-6">
           {cartItems.map((item, index) => (
+            <Link to={`/product/${item._id}`} className="block"> 
             <div
               key={index}
               className="bg-white rounded-2xl shadow-md hover:shadow-lg transition p-4 flex flex-col md:flex-row gap-6"
@@ -88,8 +96,9 @@ function MyCart() {
                 <p className="text-sm text-gray-500">Total</p>
               </div>
             </div>
-
+           </Link>
           ))} 
+          
 
 
             <div className="text-right mt-6">
@@ -98,7 +107,7 @@ function MyCart() {
                 </h2>
 
                 <button className="mt-4 bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition" 
-                 onClick={() => navigate('/checkout')}
+                 onClick={checkout}
                 >
                     Proceed to Checkout
 

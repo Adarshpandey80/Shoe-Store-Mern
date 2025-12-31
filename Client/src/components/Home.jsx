@@ -35,7 +35,11 @@ function Home() {
 
   // avoid duplicate ids (optional but recommended)
   if (!storedIds.includes(id)) {
-    storedIds.push(id);
+    storedIds.unshift(id); // add to the beginning
+    
+    if (storedIds.length > 10) {
+      storedIds.pop();
+    }
   }
   // save back to localStorage
   localStorage.setItem("productIds", JSON.stringify(storedIds));
