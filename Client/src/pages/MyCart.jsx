@@ -33,12 +33,13 @@ function MyCart() {
         
         <div className="space-y-6">
           {cartItems.map((item, index) => (
-            <Link to={`/product/${item._id}`} className="block"> 
+           
             <div
               key={index}
               className="bg-white rounded-2xl shadow-md hover:shadow-lg transition p-4 flex flex-col md:flex-row gap-6"
             >
               {/* Image */}
+               <Link to={`/product/${item._id}`} className="block"> 
               <div className="w-full md:w-40 h-40 rounded-xl overflow-hidden">
                 <img
                   src={item.image}
@@ -46,6 +47,7 @@ function MyCart() {
                   className="w-full h-full object-cover"
                 />
               </div>
+                </Link>
 
               {/* Details */}
               <div className="flex-1 space-y-2">
@@ -96,7 +98,7 @@ function MyCart() {
                 <p className="text-sm text-gray-500">Total</p>
               </div>
             </div>
-           </Link>
+         
           ))} 
           
 
