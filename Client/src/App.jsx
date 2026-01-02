@@ -8,6 +8,10 @@ import MyCart from "./pages/MyCart.jsx"
 import ShowProduct from './pages/ShowProduct.jsx'
 import Carousel from './pages/Carousel.jsx'
 import CheckOut from './pages/CheckOut.jsx'
+import Mens from './pages/Mens.jsx'
+import Women from './pages/Women.jsx'
+import Newarrival from './pages/Newarrival.jsx'
+import Sale from './pages/Sale.jsx'
 
 
 function App() {
@@ -22,7 +26,11 @@ function App() {
                  <Route path='/product/:id' element={ <ShowProduct/> } />
                  <Route path='/carousel' element={ <Carousel/> } />
                  <Route path='/checkout' element={ <CheckOut/> } />
-                 
+                 <Route path='/mens' element={<Mens/>} />
+                 <Route path='/women' element={<Women/>} />
+                  <Route path='/newarrival' element={<Newarrival/>} />
+                  <Route path="sale" element={<Sale/>} />
+
            </Route>
        </Routes>
        </BrowserRouter>

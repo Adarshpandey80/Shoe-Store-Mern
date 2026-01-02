@@ -30,7 +30,7 @@ const Navbar = () => {
         <ul className="hidden md:flex gap-10 font-medium text-gray-700">
           <li>
             <Link
-              to="/men"
+              to="/mens"
               className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
             >
               Men
@@ -46,7 +46,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/new"
+              to="/newarrival"
               className="relative after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
             >
               New Drops

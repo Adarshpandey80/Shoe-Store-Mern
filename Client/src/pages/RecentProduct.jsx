@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RecentProduct() {
+  const navigate = useNavigate();
   const [recentProducts, setRecentProducts] = useState([]);
 
   useEffect(() => {
@@ -41,6 +43,7 @@ function RecentProduct() {
           <Link
             to={`/product/${item._id}`}
             key={item._id}
+            
             className="min-w-[240px] bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
           >
             <img

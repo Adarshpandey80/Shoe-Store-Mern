@@ -10,6 +10,18 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
+  gender : {
+    type: String, 
+    required: true
+  },
+   isNewArrival: {
+    type: Boolean,
+    default: false
+  },
+   isSale : {
+    type: Boolean,
+    default: false
+   },
   price: {
     type: Number,
     required: true

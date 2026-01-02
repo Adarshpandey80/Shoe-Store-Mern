@@ -85,6 +85,9 @@ function Home() {
               <p className="text-sm text-gray-500 mb-3 line-clamp-2">
                 {item.description}
               </p>
+              <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                {item.gender}
+              </p>
 
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xl font-bold text-black">

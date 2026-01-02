@@ -26,8 +26,9 @@ const addProducts = (req, res) => {
         }
 
         try {
-            const { name, category, description, price } = req.body;
+            const { name, category, description, price , isNewArrival , isSale , gender} = req.body;
             console.log(req.files);
+            console.log(req.body);
             const imageUrls = req.files.map(file => file.path);
 
             const newProduct = new ProductModel({
@@ -35,6 +36,9 @@ const addProducts = (req, res) => {
                 category: category,
                 description: description,
                 price: price,
+                isNewArrival: isNewArrival,
+                isSale: isSale,
+                gender: gender,
                 defaultImage: imageUrls[0],
                 images: imageUrls
             });
@@ -95,6 +99,40 @@ const getRelatedProducts = async (req,res) =>{
     }
 }
 
+const getMensProducts =  (req, res) => {
+
+  console.log("getMensProducts controller called");
+};
+
+
+// const getWomenProducts = async (req,res) =>{
+//     try {
+//         const womenProducts = await ProductModel.find({gender : "women"});
+//         res.status(200).send(womenProducts);  
+//         console.log("women products", womenProducts);         
+//     } catch (error) {
+//         res.status(500).send("Error retrieving women products: " + error.message);          
+//     }
+// }
+
+// const getNewArrivals = async (req,res) =>{
+//     try {
+//         const newArrivals = await ProductModel.find({isNewArrival : true});
+//         res.status(200).send(newArrivals);        
+//     } catch (error) {
+//         res.status(500).send("Error retrieving new arrivals: " + error.message);          
+//     }
+// }
+
+// const getSaleProducts = async (req,res) =>{
+//     try {
+//         const saleProducts = await ProductModel.find({isSale : true});
+//         res.status(200).send(saleProducts);        
+//     } catch (error) {
+//         res.status(500).send("Error retrieving sale products: " + error.message);          
+//     }
+// }
+ 
 
 
 
@@ -103,5 +141,9 @@ module.exports = {
     showProductsList,
     getProductInfo,
     getRecentProductInfo,
-    getRelatedProducts
+    getRelatedProducts,
+    getMensProducts
+    // getWomenProducts,
+    // getNewArrivals,
+    // getSaleProducts
 }
