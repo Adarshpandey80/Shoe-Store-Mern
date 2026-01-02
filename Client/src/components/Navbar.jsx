@@ -23,7 +23,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-extrabold tracking-wider"
         >
-          SNEAK<span className="text-yellow-400">R</span>
+          Shoe<span className="text-yellow-400">Verse</span>
         </Link>
 
         {/* Desktop Menu */}
