@@ -5,6 +5,8 @@ const cors = require("cors")
 const Productroute = require("./routes/productRoute")
 const bodyparser = require("body-parser")
 const paymentRoute = require('./routes/paymentRoute');
+const aiRoute = require('./routes/airoute');
+const userRoute = require('./routes/userRoute');
 
 require('dotenv').config();
 
@@ -19,21 +21,14 @@ app.use(cors());
 app.use(bodyparser.urlencoded({ extended: true }))
 app.use(bodyparser.json());
 
-
-
-
-
+app.use("/aichat", aiRoute);
 app.use("/products" , Productroute)
 app.use('/payment', paymentRoute);
+app.use("/user" , userRoute);
+
+    
 
 
-
-
-
-
-app.get("/" , (req,res)=>{
-    res.send("home route")
-})
 
 app.listen(8000 , ()=>{
     console.log("app is listing on port 8000")

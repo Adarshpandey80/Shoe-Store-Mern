@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {useSelector , useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from "../cartSlice";
 import { Link } from "react-router-dom";
 import Carousel from "../pages/Carousel";
@@ -29,90 +29,87 @@ function Home() {
   }, []);
 
 
- const storeProductId = (id) => {
-  // get existing ids
-  const storedIds = JSON.parse(localStorage.getItem("productIds")) || [];
+  const storeProductId = (id) => {
+    // get existing ids
+    const storedIds = JSON.parse(localStorage.getItem("productIds")) || [];
 
-  // avoid duplicate ids (optional but recommended)
-  if (!storedIds.includes(id)) {
-    storedIds.unshift(id); // add to the beginning
-    
-    if (storedIds.length > 10) {
-      storedIds.pop();
+    // avoid duplicate ids (optional but recommended)
+    if (!storedIds.includes(id)) {
+      storedIds.unshift(id); // add to the beginning
+
+      if (storedIds.length > 10) {
+        storedIds.pop();
+      }
     }
-  }
-  // save back to localStorage
-  localStorage.setItem("productIds", JSON.stringify(storedIds));
-};
+    // save back to localStorage
+    localStorage.setItem("productIds", JSON.stringify(storedIds));
+  };
 
 
   return (
     <>
-    <Carousel/>
-    
-      <RecentProduct/>
-    
+      <Carousel />
 
-    <div className="bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-center py-6">
-        Latest Shoes Collection
-      </h1>
+      <RecentProduct />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-6 pb-10">
-        {data.map((item) => (
-          <div
-            key={item._id}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
-          >
-            {/* Image */}
-            <div className="overflow-hidden rounded-t-2xl">
-              <button className="w-full h-56 overflow-hidden" onClick={() => storeProductId(item._id)}>
-                <Link to={`/product/${item._id}`}>
-              <img
-                src={item.defaultImage}
-                alt={item.name}
-                className="w-full h-56 object-cover hover:scale-110 transition-transform duration-500"
-              />
-              </Link>
-              </button>
-              
-              
-            </div>
 
-            {/* Content */}
-            <div className="p-5">
-              <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
-              <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-                {item.description}
-              </p>
-              <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-                {item.gender}
-              </p>
+      <div className="bg-gray-50 min-h-screen">
+        <h1 className="text-3xl font-bold text-center py-6">
+          Latest Shoes Collection
+        </h1>
 
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xl font-bold text-black">
-                  ₹{item.price}
-                </span>
-                <span className="text-sm text-green-600 font-medium">
-                  In Stock
-                </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-6 pb-10">
+          {data.map((item) => (
+            <div
+              key={item._id}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
+            >
+              {/* Image */}
+              <div className="overflow-hidden rounded-t-2xl">
+
+                <Link to={`/product/${item._id}`} onClick={() => storeProductId(item._id)}>
+                  <img
+                    src={item.defaultImage}
+                    alt={item.name}
+                    className="w-full h-56 object-cover hover:scale-110 transition-transform duration-500"
+                  />
+                </Link>
+
+
+
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3">
-               
-                <BuyNow product ={item}/>
-                <AddToCard product ={item}/>
+              {/* Content */}
+              <div className="p-5">
+                <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
+                <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                  {item.description}
+                </p>
 
-                
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xl font-bold text-black">
+                    ₹{item.price}
+                  </span>
+                  <span className="text-sm text-green-600 font-medium">
+                    In Stock
+                  </span>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3">
+
+                  <BuyNow product={item} />
+                  <AddToCard product={item} />
+
+
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </>
-    
+
   );
 }
 

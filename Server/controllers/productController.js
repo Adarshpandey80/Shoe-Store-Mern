@@ -99,39 +99,53 @@ const getRelatedProducts = async (req,res) =>{
     }
 }
 
-const getMensProducts =  (req, res) => {
-
-  console.log("getMensProducts controller called");
+const getMensProducts = async (req, res) => {
+    try {
+        const mensProducts = await ProductModel.find({gender : "men"});
+        res.status(200).send(mensProducts);          
+    } catch (error) {
+        res.status(500).send("Error retrieving mens products: " + error.message);          
+    }
 };
 
 
-// const getWomenProducts = async (req,res) =>{
-//     try {
-//         const womenProducts = await ProductModel.find({gender : "women"});
-//         res.status(200).send(womenProducts);  
-//         console.log("women products", womenProducts);         
-//     } catch (error) {
-//         res.status(500).send("Error retrieving women products: " + error.message);          
-//     }
-// }
+const getWomenProducts = async (req,res) =>{
+    try {
+        const womenProducts = await ProductModel.find({gender : "women"});
+        res.status(200).send(womenProducts);  
+        console.log("women products", womenProducts);         
+    } catch (error) {
+        res.status(500).send("Error retrieving women products: " + error.message);          
+    }
+}
 
-// const getNewArrivals = async (req,res) =>{
-//     try {
-//         const newArrivals = await ProductModel.find({isNewArrival : true});
-//         res.status(200).send(newArrivals);        
-//     } catch (error) {
-//         res.status(500).send("Error retrieving new arrivals: " + error.message);          
-//     }
-// }
+const getNewArrivals = async (req,res) =>{
+    try {
+        const newArrivals = await ProductModel.find({isNewArrival : true});
+        res.status(200).send(newArrivals);        
+    } catch (error) {
+        res.status(500).send("Error retrieving new arrivals: " + error.message);          
+    }
+}
 
-// const getSaleProducts = async (req,res) =>{
-//     try {
-//         const saleProducts = await ProductModel.find({isSale : true});
-//         res.status(200).send(saleProducts);        
-//     } catch (error) {
-//         res.status(500).send("Error retrieving sale products: " + error.message);          
-//     }
-// }
+const getSaleProducts = async (req,res) =>{
+    try {
+        const saleProducts = await ProductModel.find({isSale : true});
+        res.status(200).send(saleProducts);        
+    } catch (error) {
+        res.status(500).send("Error retrieving sale products: " + error.message);          
+    }
+}
+
+const getCategoryProducts = async (req,res) =>{
+    try {
+        const category = req.params.category;
+        const categoryProducts = await ProductModel.find({ category: category });
+        res.status(200).send(categoryProducts);
+    } catch (error) {
+        res.status(500).send("Error retrieving category products: " + error.message);
+    }
+}
  
 
 
@@ -142,8 +156,9 @@ module.exports = {
     getProductInfo,
     getRecentProductInfo,
     getRelatedProducts,
-    getMensProducts
-    // getWomenProducts,
-    // getNewArrivals,
-    // getSaleProducts
+    getMensProducts,
+    getWomenProducts,
+    getNewArrivals,
+    getSaleProducts,
+    getCategoryProducts
 }
