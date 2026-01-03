@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { buyNow } from '../cartSlice';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function BuyNow({ product }) {
   const dispatch = useDispatch();
@@ -14,6 +15,9 @@ function BuyNow({ product }) {
     dispatch(buyNow({ _id: product._id, name: product.name, description: product.description, category: product.category, image: product.defaultImage, price: product.price, qnty: 1 }));
     navigate("/checkout");
   }
+
+
+
 
 
   return (

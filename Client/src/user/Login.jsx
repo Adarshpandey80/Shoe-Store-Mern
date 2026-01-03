@@ -13,8 +13,9 @@ function Login() {
       setInput(values=>({...values, [name]:value}));
    }
 
-   const handleSubmit = async () => {
-  try {
+   const handleSubmit = async (e) => {
+    e.preventDefault(); 
+   try {
     const api = "http://localhost:8000/user/login";
     const response = await axios.post(api, input);
 

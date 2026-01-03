@@ -9,7 +9,6 @@ const CheckOut = () => {
   const checkOutSource = useSelector((state) => state.cart.checkOutSource);
 
   
-  
   // decide source
 
  const itemsToShow = checkOutSource === "buyNow" && buyNowItem ? [buyNowItem] : myCart;

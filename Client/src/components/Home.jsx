@@ -7,8 +7,10 @@ import Carousel from "../pages/Carousel";
 import BuyNow from "../btnComponents/BuyNow";
 import AddToCard from "../btnComponents/AddToCard";
 import RecentProduct from "../pages/RecentProduct";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
@@ -24,8 +26,26 @@ function Home() {
     }
   };
 
+   const validateAuth=async()=>{
+       const token = localStorage.getItem("token");
+       try {
+        const api = "http://localhost:8000/user/userauth";
+        const response = await axios.post(api , null ,{headers:{"auth_token":token}});
+         console.log(response.data)
+         localStorage.setItem("username", response.data.username);
+        localStorage.setItem("email", response.data.email);
+        navigate("/dashboard");
+       } catch (error) {
+         console.log(error)
+       }
+   }
+
   useEffect(() => {
     fetchData();
+  //  const token = localStorage.getItem("token");
+  // if (token) {
+  //   validateAuth();
+  // }
   }, []);
 
 

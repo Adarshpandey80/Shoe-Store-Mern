@@ -1,7 +1,8 @@
 const UserModel = require("../models/userModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const userModel = require("../models/userModel");
+
+
 
 const register = async (req, res) => {
     try {
@@ -44,10 +45,10 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-
+ 
     try {
 
-        const user = await userModel.findOne({ email });
+        const user = await UserModel.findOne({ email });
         if (!user) {
             return res.status(401).json({ msg: "Invalid Email" });
         }
@@ -57,10 +58,10 @@ const login = async (req, res) => {
             return res.status(401).json({ msg: "Invalid Password" });
         }
 
-      const token = jwt.sign({ id: user._id }, "adarsh111", {
+      const token = jwt.sign({ id: user._id }, "adarsh222", {
             expiresIn: 3 * 24 * 60 * 60,
         });
-        
+
          res.send({ token: token, msg: "You are succesfully Login" });
 
     } catch (error) {
@@ -69,7 +70,18 @@ const login = async (req, res) => {
     }
 };
 
-
+ 
+const authfun = async (req, res) => {
+    try {
+        const token = req.header("auth_token")
+        const decode = jwt.verify(token, "adarsh222");
+        const user = await UserModel.findById(decode.id);
+        console.log(user);
+        res.status(200).send(user)
+    } catch (error) {
+        res.status(401).send("error in empAuth")
+    }
+}
 
 
 
@@ -77,5 +89,6 @@ const login = async (req, res) => {
 
 module.exports = {
     register,
-    login
+    login,
+    authfun
 }

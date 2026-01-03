@@ -2,6 +2,7 @@
 import React from 'react'
 import Home from './components/Home'
 import Layout from './Layout'
+import UserLayout from './UserLayout.jsx'
 import { BrowserRouter ,  Routes , Route } from 'react-router-dom'
 import ProductList from './pages/ProductList'
 import MyCart from "./pages/MyCart.jsx"
@@ -16,32 +17,56 @@ import SeeCategoryProd from './pages/SeeCategoryProd.jsx'
 import OpenAI from './pages/OpenAI.jsx'
 import Login from './user/Login.jsx'
 import Register from './user/Register.jsx'
+import Dashboard from './user/Dashboard.jsx'
+import ProtectRoute from './components/ProtectRoute.jsx'
+import Order from './user/Order.jsx'
+import Profile from './user/profile.jsx'
+import Address from './user/Address.jsx'
+import Payment from './user/Payment.jsx'
+import HelpCenter from './user/HelpCenter.jsx'
+
 
 
 function App() {
   return (
     <>
        <BrowserRouter>
-       <Routes>
-           <Route path='productlist' element={<ProductList/>}/>     
-                 <Route path='/' element={<Layout/>} >
-                 <Route index element={<Home/>} />
-                 <Route path='/cart' element={<MyCart/>} />
-                 <Route path='/carousel' element={ <Carousel/> } />
-                 <Route path='/checkout' element={ <CheckOut/> } />
-                 <Route path='/mens' element={<Mens/>} />
-                 <Route path='/women' element={<Women/>} />
-                  <Route path='/newarrival' element={<Newarrival/>} />
-                  <Route path="sale" element={<Sale/>} />
-                  <Route path='/product/:id' element={ <ShowProduct/> } />
-                  <Route path='/product/category/:category' element={ <SeeCategoryProd/> } />
-                  <Route path='/ai-search' element={ <OpenAI/> } />
-                  <Route path='/login' element={ <Login/> } />
-                  <Route path='/register' element={ <Register/> } />
+      <Routes>
+   
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path='/productlist' element={<ProductList/>} />
 
-           </Route>
-       </Routes>
-       </BrowserRouter>
+     
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="cart" element={<MyCart />} />
+          <Route path="carousel" element={<Carousel />} />
+          <Route path="checkout" element={<ProtectRoute><CheckOut /></ProtectRoute>} />
+          <Route path="mens" element={<Mens />} />
+          <Route path="women" element={<Women />} />
+          <Route path="newarrival" element={<Newarrival />} />
+          <Route path="sale" element={<Sale />} />
+          <Route path="product/:id" element={<ShowProduct />} />
+          <Route path="product/category/:category" element={<SeeCategoryProd />} />
+          <Route path="ai-search" element={<OpenAI />} />
+        </Route>
+
+       
+        <Route path="/account" element={<ProtectRoute><UserLayout /></ProtectRoute>}>
+          <Route index element={<Dashboard />} />
+          <Route path="/account/dashboard" element={<Dashboard />} />
+          <Route path='/account/order' element={<Order/>} />
+          <Route path='/account/cart' element={<MyCart/>} />
+          <Route path='/account/helpcenter' element={<HelpCenter/>} />
+          <Route path='/account/profile' element={<Profile/>} />
+          <Route path='/account/address' element={<Address/>} />
+          <Route path='/account/payment' element={<Payment/>} />
+          
+          
+        </Route>
+      </Routes>
+    </BrowserRouter>
     </>
   )
 }
