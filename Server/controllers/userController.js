@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password ,phone , address , pincode , gender } = req.body;
 
         // 1️⃣ Basic validation
         if (!username || !email || !password) {
@@ -25,10 +25,23 @@ const register = async (req, res) => {
 
         const passwordHash = await bcrypt.hash(password, 10);
 
+        // Transform address string into the expected object format for the embedded schema
+        const addressData = [{
+            fullName: username,
+            phone: phone,
+            address: address,
+            pincode: pincode,
+            gender: gender
+        }];
+
         await UserModel.create({
             username,
             email,
             password: passwordHash,
+            phone,
+            address: addressData,
+            pincode,
+            gender
         });
         res.status(201).send({
             message: "You are successfully registered!",
@@ -84,11 +97,56 @@ const authfun = async (req, res) => {
 }
 
 
+const userdata = async (req,res) =>{
+   try {
+     const {id} = req.params;
+     const data = await UserModel.findById(id)
+     res.status(200).send(data)
+   } catch (error) {
+     res.status(500).send("Error fatching user data  products: " + error.message); 
+   }
+}
 
+
+const updateuserdata = async (req,res) =>{
+    try {
+        const {id} = req.params;
+        const userdata = req.body;
+        // Add {new: true} to return the updated document instead of the old one
+        const updatedata = await UserModel.findByIdAndUpdate(id , userdata, {new: true, runValidators: true}) ;
+        if (!updatedata) {
+            return res.status(404).json({ message: "User not found" });
+        }
+       res.status(200).json({ message: "Profile updated successfully", data: updatedata });
+    } catch (error) {
+         console.error("Update error:", error);
+         res.status(500).json({ message: "Error updating user data", error: error.message }); 
+    }
+}
+
+const useraddress = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await UserModel.findById(id).select("address");
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.status(200).send({address: user.address});
+
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data", error: error.message }); 
+  }
+};
 
 
 module.exports = {
     register,
     login,
-    authfun
+    authfun,
+    userdata,
+    updateuserdata,
+    useraddress
 }

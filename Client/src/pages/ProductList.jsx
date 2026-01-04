@@ -31,6 +31,7 @@ function ProductList() {
         ...product,
         isNewArrival: checked,
       });
+      
     } else if (value === 'sale') {
       setProduct({
         ...product,

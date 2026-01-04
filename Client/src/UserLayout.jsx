@@ -1,13 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Dashboard from './user/Dashboard'
 
 function UserLayout() {
   return (
       <div className="min-h-screen bg-gray-100">
       <main className="p-6 md:p-10">
-        <Outlet />
+     <Outlet />
       </main>
+       
     </div>
+   
   )
 }
 

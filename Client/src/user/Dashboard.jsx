@@ -2,6 +2,8 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RecentProduct from "../pages/RecentProduct";
+import { useEffect } from "react";
+import axios from "axios";
 
 import {
   User,
@@ -15,12 +17,41 @@ import {
   LogOut,
 } from "lucide-react";
 
+
+
+
+
 const Dashboard = () => {
+
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login")
   };
+
+  const email = localStorage.getItem("email");
+  const username = localStorage.getItem("username");
+  
+
+
+ const userData = async ()=>{
+  const api = 'http://localhost:8000/user/getuserdata';
+    try {
+      const response = await axios.get(api);
+      console.log(response.data)
+     
+    } catch (error) {
+      console.error("Error fetching sale products:", error);
+    }
+ }
+
+
+useEffect(()=>{
+  userData();
+} ,[])
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 md:px-8 md:py-10">
@@ -32,12 +63,12 @@ const Dashboard = () => {
     <div className="bg-indigo-700 p-6 rounded-2xl shadow-lg flex items-center gap-4 text-white">
       <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center 
         text-2xl font-bold text-indigo-700">
-        A
+        {username[0]}
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold">Adarsh Pandey</h2>
-        <p className="text-indigo-200 text-sm">adarsh@example.com</p>
+        <h2 className="text-2xl font-bold">Welcome , {username}</h2>
+        <p className="text-indigo-200 text-sm">{email}</p>
       </div>
     </div>
 
