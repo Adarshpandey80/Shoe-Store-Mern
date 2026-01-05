@@ -4,6 +4,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"
 
 
 function Address() {
@@ -12,6 +13,10 @@ function Address() {
   const [userId, setUserId] = useState("");
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [editAddress, setEditAddress] = useState(null);
+  const [newAddress , setNewAddress] = useState({});
+
 
   /* ================= GET USER ID ================= */
   useEffect(() => {
@@ -45,6 +50,67 @@ function Address() {
     return <div className="text-center mt-20 text-lg">Loading addresses...</div>;
   }
 
+
+  const handlUpdate = ((e) => {
+    const { name, value } = e.target;
+
+    setEditAddress({ ...editAddress, [name]: value })
+  })
+
+
+  const saveAddress = async () => {
+    try {
+      const api = `http://localhost:8000/user/updateaddress/${userId}/${editAddress._id}`
+      const response = await axios.put(api, editAddress);
+      setAddresses(response.data)
+      toast.success(response.data.message)
+      setOpenModal(false);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+
+  const deleteAddress = async (addressId) => {
+    try {
+   const response =    await axios.delete(
+        `http://localhost:8000/user/deleteaddress/${userId}/${addressId}`
+      );
+      toast.success(response.data.message , {position:"top-center"})
+      setAddresses(prev =>
+        prev.filter(addr => addr._id !== addressId)
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const addNewAddress =  (e)=>{
+        const {name , value} = e.target
+        setNewAddress((prev)=>({
+           ...prev , [name]:value
+        }))
+  }
+
+const saveNewAddress = async ()=>{
+   try {
+    const api =  `http://localhost:8000/user/newaddaddress/${userId}`
+    const response = await axios.post(api , newAddress)
+    setAddresses(response.data.address , )
+    toast.success(response.data.message , {position:"top-center"})
+   } catch (error) {
+     console.log(error)
+   }
+}
+
+
+
+
+
   return (
     <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto">
@@ -55,7 +121,7 @@ function Address() {
             <button
               onClick={() => navigate("/account")}
               className="p-2 rounded-lg bg-white border shadow 
-      hover:bg-gray-100 transition"
+            hover:bg-gray-100 transition"
             >
               <ArrowLeft size={18} />
             </button>
@@ -69,7 +135,7 @@ function Address() {
               </p>
             </div>
           </div>
-        
+
 
           <button
             onClick={() => setShowDrawer(true)}
@@ -78,7 +144,7 @@ function Address() {
           >
             <Plus size={18} /> Add Address
           </button>
-        </div>   
+        </div>
 
 
         {/* ===== ADDRESS GRID ===== */}
@@ -120,10 +186,17 @@ function Address() {
 
                 {/* ACTIONS */}
                 <div className="flex gap-5 mt-6 text-sm font-medium">
-                  <button className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800">
+                  <button className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800"
+                    onClick={() => {
+                      setOpenModal(true)
+                      setEditAddress(addr);
+                    }}
+                  >
                     <Edit2 size={15} /> Edit
                   </button>
-                  <button className="flex items-center gap-1 text-rose-600 hover:text-rose-800">
+                  <button className="flex items-center gap-1 text-rose-600 hover:text-rose-800"
+                    onClick={() => deleteAddress(addr._id)}
+                  >
                     <Trash2 size={15} /> Delete
                   </button>
                 </div>
@@ -152,19 +225,45 @@ function Address() {
 
               <div className="space-y-4">
                 <input
+                  name="fullName"
+                  type="text"
+                  onChange={addNewAddress}
                   placeholder="Full Name"
                   className="w-full rounded-xl border px-4 py-3 focus:ring-2 focus:ring-black outline-none"
                 />
                 <input
+                  type="number"
+                  name="phone"
+                  onChange={addNewAddress}
                   placeholder="Mobile Number"
                   className="w-full rounded-xl border px-4 py-3 focus:ring-2 focus:ring-black outline-none"
                 />
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-gray-600">Gender (Optional)</label>
+                  <select
+                    name="gender"
+                    onChange={addNewAddress}
+                    className="border border-gray-300 rounded-lg px-3 py-2 
+                      focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
                 <textarea
+                  type="text"
+                  name="address"
+                  onChange={addNewAddress}
                   placeholder="Complete Address"
                   rows={3}
                   className="w-full rounded-xl border px-4 py-3 focus:ring-2 focus:ring-black outline-none resize-none"
                 />
                 <input
+                  type="number"
+                  name="pincode"
+                  onChange={addNewAddress}
                   placeholder="Pincode"
                   className="w-full rounded-xl border px-4 py-3 focus:ring-2 focus:ring-black outline-none"
                 />
@@ -173,6 +272,7 @@ function Address() {
               <button
                 className="mt-6 w-full bg-black text-white py-3 rounded-xl 
                 font-semibold hover:bg-slate-900 transition"
+                onClick={saveNewAddress}
               >
                 Save Address
               </button>
@@ -180,6 +280,80 @@ function Address() {
           </div>
         )}
       </div>
+
+      {/* ===================Open Model===================== */}
+
+      {openModal && editAddress && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setOpenModal(false)}
+          />
+
+          {/* Modal Box */}
+          <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-xl z-10">
+
+            <h2 className="text-xl font-semibold mb-4">
+              Edit Address
+            </h2>
+
+            <input
+              type="text"
+              name="fullName"
+              value={editAddress.fullName}
+              onChange={handlUpdate}
+              placeholder="Full Name"
+              className="w-full border rounded-lg px-4 py-2 mb-3"
+            />
+
+            <input
+              type="number"
+              name="phone"
+              value={editAddress.phone}
+              onChange={handlUpdate}
+              placeholder="Phone Number"
+              className="w-full border rounded-lg px-4 py-2 mb-3"
+            />
+
+            <input
+              type="number"
+              name="pincode"
+              value={editAddress.pincode}
+              onChange={handlUpdate}
+              placeholder="PinCode"
+              className="w-full border rounded-lg px-4 py-2 mb-3"
+            />
+
+            <textarea
+              name="address"
+              value={editAddress.address}
+              onChange={handlUpdate}
+              placeholder="Address"
+              className="w-full border rounded-lg px-4 py-2 mb-3"
+            />
+
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                onClick={() => setOpenModal(false)}
+                className="px-4 py-2 border rounded-lg"
+              >
+                Cancel
+              </button>
+
+              <button
+                className="px-4 py-2 bg-black text-white rounded-lg"
+                onClick={saveAddress}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
 
       {/* ===== SLIDE ANIMATION ===== */}
       <style>

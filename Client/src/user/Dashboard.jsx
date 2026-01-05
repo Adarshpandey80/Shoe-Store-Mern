@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import RecentProduct from "../pages/RecentProduct";
 import { useEffect } from "react";
 import axios from "axios";
-
+import Navbar from "../components/Navbar"
 import {
   User,
   Box,
@@ -54,6 +54,9 @@ useEffect(()=>{
 
 
   return (
+    <> 
+    <Navbar/>
+
     <div className="min-h-screen bg-gray-100 px-4 py-6 md:px-8 md:py-10">
 
   {/* ===== MAIN CONTAINER ===== */}
@@ -182,7 +185,7 @@ useEffect(()=>{
 
   </div>
 </div>
-
+ </>
   );
 };
 

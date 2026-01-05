@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
     try {
-        const { username, email, password ,phone , address , pincode , gender } = req.body;
+        const { username, email, password, phone, address, pincode, gender } = req.body;
 
         // 1️⃣ Basic validation
         if (!username || !email || !password) {
@@ -58,7 +58,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
- 
+
     try {
 
         const user = await UserModel.findOne({ email });
@@ -71,11 +71,11 @@ const login = async (req, res) => {
             return res.status(401).json({ msg: "Invalid Password" });
         }
 
-      const token = jwt.sign({ id: user._id }, "adarsh222", {
+        const token = jwt.sign({ id: user._id }, "adarsh222", {
             expiresIn: 3 * 24 * 60 * 60,
         });
 
-         res.send({ token: token, msg: "You are succesfully Login" });
+        res.send({ token: token, msg: "You are succesfully Login" });
 
     } catch (error) {
         console.error("Login error:", error);
@@ -83,7 +83,7 @@ const login = async (req, res) => {
     }
 };
 
- 
+
 const authfun = async (req, res) => {
     try {
         const token = req.header("auth_token")
@@ -97,49 +97,150 @@ const authfun = async (req, res) => {
 }
 
 
-const userdata = async (req,res) =>{
-   try {
-     const {id} = req.params;
-     const data = await UserModel.findById(id)
-     res.status(200).send(data)
-   } catch (error) {
-     res.status(500).send("Error fatching user data  products: " + error.message); 
-   }
+const userdata = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await UserModel.findById(id)
+        res.status(200).send(data)
+    } catch (error) {
+        res.status(500).send("Error fatching user data  products: " + error.message);
+    }
 }
 
 
-const updateuserdata = async (req,res) =>{
+const updateuserdata = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const userdata = req.body;
         // Add {new: true} to return the updated document instead of the old one
-        const updatedata = await UserModel.findByIdAndUpdate(id , userdata, {new: true, runValidators: true}) ;
+        const updatedata = await UserModel.findByIdAndUpdate(id, userdata, { new: true, runValidators: true });
         if (!updatedata) {
             return res.status(404).json({ message: "User not found" });
         }
-       res.status(200).json({ message: "Profile updated successfully", data: updatedata });
+        res.status(200).json({ message: "Profile updated successfully", data: updatedata });
     } catch (error) {
-         console.error("Update error:", error);
-         res.status(500).json({ message: "Error updating user data", error: error.message }); 
+        console.error("Update error:", error);
+        res.status(500).json({ message: "Error updating user data", error: error.message });
     }
 }
 
 const useraddress = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const user = await UserModel.findById(id).select("address");
+        const user = await UserModel.findById(id).select("address");
 
-    if (!user) {
-      return res.status(404).send({ message: "User not found" });
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        res.status(200).send({ address: user.address });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error updating user data", error: error.message });
     }
-
-    res.status(200).send({address: user.address});
-
-  } catch (error) {
-    res.status(500).json({ message: "Error updating user data", error: error.message }); 
-  }
 };
+
+
+const updateUserAddress = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const addressId = req.params.addressId;
+
+        const updatedUser = await UserModel.findOneAndUpdate(
+            { _id: userId, "address._id": addressId },
+            {
+                $set: {
+                    "address.$": req.body
+                }
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Address not found" });
+        }
+
+        res.status(200).json({
+            message: "Address updated successfully",
+            address: updatedUser.address
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error updating address" });
+    }
+};
+
+
+const deleteUserAddress = async (req, res) => {
+    try {
+        const { userId, addressId } = req.params;
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            userId,
+            {
+                $pull: {
+                    address: { _id: addressId }
+                }
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.status(200).send({
+            success: true,
+            message: "Address deleted successfully",
+            address: updatedUser.address
+        });
+
+    } catch (error) {
+        console.error("Delete Address Error:", error);
+        res.status(500).send({
+            success: false,
+            message: "Failed to delete address"
+        });
+    }
+};
+
+
+const addAddress = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const { fullName, phone, address, pincode, gender } = req.body;
+
+        const newAddress = {
+            fullName,
+            phone,
+            address,
+            pincode,
+            gender,
+        };
+
+        const user = await UserModel.findByIdAndUpdate(
+            userId,
+            { $push: { address: newAddress } },
+            { new: true }
+        );
+
+        res.status(201).send({
+            message: "Address added successfully",
+            address: user.address,
+        });
+
+    } catch (error) {
+        res.status(500).send({
+            message: "Failed to add address",
+        });
+    }
+};
+
 
 
 module.exports = {
@@ -148,5 +249,8 @@ module.exports = {
     authfun,
     userdata,
     updateuserdata,
-    useraddress
+    useraddress,
+    updateUserAddress,
+    deleteUserAddress,
+    addAddress
 }
