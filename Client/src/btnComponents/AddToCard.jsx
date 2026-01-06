@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '../cartSlice'
+import {toast} from "react-toastify"
 
 function AddToCard({product}) {
     const dispatch = useDispatch();
@@ -9,6 +10,7 @@ function AddToCard({product}) {
     const addtocard = () => {
         console.log("Add to Cart clicked");
         dispatch(addToCart({_id:product._id, name:product.name, description:product.description, category:product.category,  image:product.defaultImage, price:product.price, qnty:1}));
+        toast.success("Product added successfully" , {position:"top-center"})
     }
 
     return (
@@ -17,6 +19,7 @@ function AddToCard({product}) {
                 onClick={addtocard }
             >
                 Add to Cart
+                
             </button>
         </>
     )

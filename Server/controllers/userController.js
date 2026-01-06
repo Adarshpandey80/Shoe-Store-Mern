@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const OrderModel = require("../models/orderModel")
 
 
 
@@ -89,7 +90,7 @@ const authfun = async (req, res) => {
         const token = req.header("auth_token")
         const decode = jwt.verify(token, "adarsh222");
         const user = await UserModel.findById(decode.id);
-        console.log(user);
+
         res.status(200).send(user)
     } catch (error) {
         res.status(401).send("error in empAuth")
@@ -127,9 +128,7 @@ const updateuserdata = async (req, res) => {
 const useraddress = async (req, res) => {
     try {
         const { id } = req.params;
-
         const user = await UserModel.findById(id).select("address");
-
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
@@ -146,7 +145,6 @@ const updateUserAddress = async (req, res) => {
     try {
         const userId = req.params.userId;
         const addressId = req.params.addressId;
-
         const updatedUser = await UserModel.findOneAndUpdate(
             { _id: userId, "address._id": addressId },
             {
@@ -241,6 +239,19 @@ const addAddress = async (req, res) => {
     }
 };
 
+const fetchOrderHistory = async (req,res)=>{
+    try {
+        const {id} = req.params
+        const data = await OrderModel.find({ userId: id }).sort({ createdAt: -1 }); // latest first (optional);
+         res.status(201).send(data);
+
+    } catch (error) {
+        res.status(500).send({
+            message: "Failed Fatch Order History",
+        });
+    }
+}
+
 
 
 module.exports = {
@@ -252,5 +263,6 @@ module.exports = {
     useraddress,
     updateUserAddress,
     deleteUserAddress,
-    addAddress
+    addAddress,
+    fetchOrderHistory
 }

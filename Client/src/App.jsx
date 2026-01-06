@@ -24,6 +24,7 @@ import Profile from './user/profile.jsx'
 import Address from './user/Address.jsx'
 import Payment from './user/Payment.jsx'
 import HelpCenter from './user/HelpCenter.jsx'
+import WatchlistCart from './user/WatchlistCart.jsx'
 
 
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="/account/dashboard" element={<Dashboard />} />
           <Route path='/account/order' element={<Order/>} />
           <Route path='/account/cart' element={<MyCart/>} />
+          <Route path='/account/watchlist' element={<WatchlistCart/>} />
           <Route path='/account/helpcenter' element={<HelpCenter/>} />
           <Route path='/account/profile' element={<Profile/>} />
           <Route path='/account/address' element={<Address/>} />

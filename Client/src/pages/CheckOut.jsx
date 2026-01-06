@@ -1,67 +1,106 @@
-import { useSelector } from "react-redux";
+import { useSelector} from "react-redux";
 import axios from "axios";
-import {clearBuyNow} from "../cartSlice";
+import { clearBuyNow } from "../cartSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify"
+import { jwtDecode } from "jwt-decode";
+import { useState, useEffect } from "react";
+import {  clearMyCart} from "../cartSlice"
+import { useNavigate } from "react-router-dom";
+ 
+
+
 const CheckOut = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
+    const [userId, setUserId] = useState("");
   const myCart = useSelector((state) => state.cart.cartItem);
   const buyNowItem = useSelector((state) => state.cart.buyNowItem);
   const checkOutSource = useSelector((state) => state.cart.checkOutSource);
 
-  
+   useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = jwtDecode(token);
+        setUserId(decoded.id);
+      }
+    }, []);
+
   // decide source
 
- const itemsToShow = checkOutSource === "buyNow" && buyNowItem ? [buyNowItem] : myCart;
+  const itemsToShow = checkOutSource === "buyNow" && buyNowItem ? [buyNowItem] : myCart;
 
   let totalAmount = 0;
-    let proName="";
-    let proImg="";
+  let proName = "";
+  let proImg = "";
 
   itemsToShow.forEach((item) => {
-       totalAmount += item.price * item.qnty;
-       proName+=item.name+", ";
-        proImg=item.image;
+    totalAmount += item.price * item.qnty;
+    proName += item.name + ", ";
+    proImg = item.image;
   });
 
 
-    const initPay = (data) => {
-  const options = {
-    key : "rzp_test_RvRurWrKcudxY0",
-    //  amount: data.amount,
-    currency: data.currency,
-    name: proName,
-    description: "Test",
-    image:proImg,
-    order_id: data.id,
-    handler: async (response) => {
-      try {
-        const verifyURL = "http://localhost:8080/payment/verify";
-        const {data} = await axios.post(verifyURL,response);
-        dispatch(clearBuyNow());
-      } catch(error) {
-        console.log(error);
-      }
-    },
-    theme: {
-      color: "#3399cc",
-    },
+
+
+  const initPay = (data) => {
+    const options = {
+      key: "rzp_test_RvRurWrKcudxY0",
+      currency: data.currency,
+      name: proName,
+      description: "Test",
+      image: proImg,
+      order_id: data.id,
+
+      handler: async (response) => {
+        try {
+          const verifyURL = "http://localhost:8000/payment/verify";
+
+          const payload = {
+            razorpay_orderID: response.razorpay_order_id,
+            razorpay_paymentID: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+
+            userId,
+            amount: totalAmount,
+
+            products: itemsToShow.map(item => ({
+              name: item.name,
+              price: item.price,
+              quantity: item.qnty
+            }))
+          };
+
+          await axios.post(verifyURL, payload);
+          dispatch(clearBuyNow());
+          dispatch(clearMyCart())
+          toast.success("Order placed successfully");
+          navigate("/")
+
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      theme: { color: "#3399cc" },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
   };
-  const rzp1 = new window.Razorpay(options);
-  rzp1.open();
-};
 
 
 
-   const handlePay = async () => {
-  try {
-    const orderURL = "http://localhost:8000/payment/orders";
-    const {data} = await axios.post(orderURL, {amount: totalAmount});
-    console.log(data);
-    initPay(data.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const handlePay = async () => {
+    try {
+      const orderURL = "http://localhost:8000/payment/orders";
+      const { data } = await axios.post(orderURL, { amount: totalAmount });
+      console.log(data);
+      initPay(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
 
@@ -70,7 +109,7 @@ const CheckOut = () => {
       <h1 className="text-3xl font-bold mb-8">Checkout</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
+
         {/* LEFT: PRODUCT LIST */}
         <div className="md:col-span-2 space-y-4">
           {itemsToShow.map((item, index) => (
@@ -122,8 +161,8 @@ const CheckOut = () => {
             <span>₹{totalAmount}</span>
           </div>
 
-          <button className="w-full bg-black text-white py-3 rounded-lg text-lg font-medium hover:bg-gray-800 transition" 
-           onClick={handlePay}
+          <button className="w-full bg-black text-white py-3 rounded-lg text-lg font-medium hover:bg-gray-800 transition"
+            onClick={handlePay}
           >
             Make Payment
           </button>

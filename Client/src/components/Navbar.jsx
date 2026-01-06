@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, User, Search, Menu, X , Sparkles } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import UserMenu from "../user/UserMenu"
+import UserMenu from "../user/UserMenu";
+
 
 
 
@@ -78,10 +79,7 @@ const Navbar = () => {
             onClick={() => navigate("/ai-search")}
           />
 
-          
-          {/* <Link to="/account">
-            <User className="w-5 h-5 cursor-pointer" />
-          </Link> */}
+      
           <UserMenu />
 
           <Link to="/cart" className="relative">

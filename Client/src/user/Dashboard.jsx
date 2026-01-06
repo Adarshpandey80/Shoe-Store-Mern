@@ -101,7 +101,7 @@ useEffect(()=>{
         </Link>
 
         <Link
-          to="/account/wishlist"
+          to="/account/watchlist"
           className="bg-white rounded-2xl shadow-md p-5 
           flex flex-col items-center hover:shadow-xl transition hover:-translate-y-1"
         >
@@ -167,18 +167,7 @@ useEffect(()=>{
 
     {/* ===== RECENT PRODUCTS ===== */}
     <div className="bg-white rounded-2xl shadow-lg p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-700">
-          Recently Viewed Products
-        </h3>
-
-        <Link
-          to="/recent"
-          className="text-sm font-medium text-indigo-600 hover:underline"
-        >
-          View All
-        </Link>
-      </div>
+      
 
       <RecentProduct />
     </div>

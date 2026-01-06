@@ -113,7 +113,7 @@ const getWomenProducts = async (req,res) =>{
     try {
         const womenProducts = await ProductModel.find({gender : "women"});
         res.status(200).send(womenProducts);  
-        console.log("women products", womenProducts);         
+               
     } catch (error) {
         res.status(500).send("Error retrieving women products: " + error.message);          
     }

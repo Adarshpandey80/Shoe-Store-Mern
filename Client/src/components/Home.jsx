@@ -6,8 +6,11 @@ import { Link } from "react-router-dom";
 import Carousel from "../pages/Carousel";
 import BuyNow from "../btnComponents/BuyNow";
 import AddToCard from "../btnComponents/AddToCard";
+import WatchlistBtn from "../btnComponents/WatchlistBtn";
 import RecentProduct from "../pages/RecentProduct";
 import { useNavigate } from "react-router-dom";
+
+
 
 function Home() {
   const navigate = useNavigate();
@@ -26,26 +29,26 @@ function Home() {
     }
   };
 
-   const validateAuth=async()=>{
-       const token = localStorage.getItem("token");
-       try {
-        const api = "http://localhost:8000/user/userauth";
-        const response = await axios.post(api , null ,{headers:{"auth_token":token}});
-         console.log(response.data)
-         localStorage.setItem("username", response.data.username);
-        localStorage.setItem("email", response.data.email);
-        navigate("/dashboard");
-       } catch (error) {
-         console.log(error)
-       }
-   }
+  const validateAuth = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const api = "http://localhost:8000/user/userauth";
+      const response = await axios.post(api, null, { headers: { "auth_token": token } });
+      console.log(response.data)
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("email", response.data.email);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     fetchData();
-  //  const token = localStorage.getItem("token");
-  // if (token) {
-  //   validateAuth();
-  // }
+    //  const token = localStorage.getItem("token");
+    // if (token) {
+    //   validateAuth();
+    // }
   }, []);
 
 
@@ -65,6 +68,12 @@ function Home() {
     localStorage.setItem("productIds", JSON.stringify(storedIds));
   };
 
+  const addToWishlist = (product) => {
+    console.log("Added to wishlist:", product);
+    // later → call API or redux
+  };
+
+
 
   return (
     <>
@@ -82,11 +91,12 @@ function Home() {
           {data.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
+              className=" relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
             >
+              <WatchlistBtn product={item}/>
               {/* Image */}
-              <div className="overflow-hidden rounded-t-2xl">
 
+              <div className="overflow-hidden rounded-t-2xl">
                 <Link to={`/product/${item._id}`} onClick={() => storeProductId(item._id)}>
                   <img
                     src={item.defaultImage}
