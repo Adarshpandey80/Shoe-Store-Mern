@@ -4,7 +4,7 @@ import Home from './components/Home'
 import Layout from './Layout'
 import UserLayout from './UserLayout.jsx'
 import { BrowserRouter ,  Routes , Route } from 'react-router-dom'
-import ProductList from './pages/ProductList'
+import ProductList from './AdminSeller/ProductList.jsx'
 import MyCart from "./pages/MyCart.jsx"
 import ShowProduct from './pages/ShowProduct.jsx'
 import Carousel from './pages/Carousel.jsx'
@@ -25,6 +25,9 @@ import Address from './user/Address.jsx'
 import Payment from './user/Payment.jsx'
 import HelpCenter from './user/HelpCenter.jsx'
 import WatchlistCart from './user/WatchlistCart.jsx'
+import AdminSellerLayout from './AdminSellerLayout.jsx'
+import AdminDashboard from './AdminSeller/AdminDashboard.jsx'
+import Products from './AdminSeller/Products.jsx'
 
 
 
@@ -36,7 +39,7 @@ function App() {
    
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path='/productlist' element={<ProductList/>} />
+      
 
      
         <Route path="/" element={<Layout />}>
@@ -64,10 +67,19 @@ function App() {
           <Route path='/account/profile' element={<Profile/>} />
           <Route path='/account/address' element={<Address/>} />
           <Route path='/account/payment' element={<Payment/>} />
-          
-          
+        </Route>
+
+        <Route path='/adminSeller' element={<AdminSellerLayout/>}>
+        <Route index element={<AdminDashboard/>}/>
+          <Route path='/adminSeller/productlist' element={<ProductList/>} />
+          <Route path='/adminSeller/allproducts' element={<Products/>} />
+
         </Route>
       </Routes>
+
+   
+
+
     </BrowserRouter>
     </>
   )

@@ -1,8 +1,10 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function ProductList() {
+  const navigate = useNavigate()
 
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
@@ -12,26 +14,26 @@ function ProductList() {
   const handleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-      setProduct({
-        ...product,
-        [name]: value,
-      });
-     
+    setProduct({
+      ...product,
+      [name]: value,
+    });
+
   };
-   console.log(product);
+  console.log(product);
 
   const handleImage = (e) => {
     setImages(e.target.files);
   }
 
   const handleTag = (e) => {
-    let {value , checked} = e.target;
+    let { value, checked } = e.target;
     if (value === 'new') {
       setProduct({
         ...product,
         isNewArrival: checked,
       });
-      
+
     } else if (value === 'sale') {
       setProduct({
         ...product,
@@ -104,7 +106,7 @@ function ProductList() {
             <div>
               <label className="block text-sm font-medium mb-1">For</label>
               <select name="gender" onChange={handleChange} className="w-full border rounded-lg px-3 py-2">
-                 <option value="">Select Gender</option>
+                <option value="">Select Gender</option>
                 <option value="men">Men</option>
                 <option value="women">Women</option>
                 <option value="unisex">Unisex</option>
@@ -114,12 +116,12 @@ function ProductList() {
             {/* Tags */}
             <div className="flex gap-4 mt-3">
               <label className="flex items-center gap-2">
-                <input type="checkbox"  value='new' onChange={handleTag} />
+                <input type="checkbox" value='new' onChange={handleTag} />
                 <span>New Arrival</span>
               </label>
 
               <label className="flex items-center gap-2">
-                <input type="checkbox"  value='sale' onChange={handleTag} />
+                <input type="checkbox" value='sale' onChange={handleTag} />
                 <span>On Sale</span>
               </label>
             </div>
@@ -179,6 +181,13 @@ function ProductList() {
             className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all"
           >
             Save Product
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="w-full bg-white border-2 border-black  text-black py-3 rounded-lg font-semibold hover:bg-gray-800 hover:text-white transition-all"
+          >
+            Cancel
           </button>
         </form>
       </div>

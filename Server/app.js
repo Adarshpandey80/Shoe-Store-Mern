@@ -7,6 +7,7 @@ const bodyparser = require("body-parser")
 const paymentRoute = require('./routes/paymentRoute');
 const aiRoute = require('./routes/airoute');
 const userRoute = require('./routes/userRoute');
+const adminRoute = require("./routes/adminSellerRoute")
 
 require('dotenv').config();
 
@@ -25,6 +26,7 @@ app.use("/aichat", aiRoute);
 app.use("/products" , Productroute)
 app.use('/payment', paymentRoute);
 app.use("/user" , userRoute);
+app.use("/admin" , adminRoute)
 
     
 
