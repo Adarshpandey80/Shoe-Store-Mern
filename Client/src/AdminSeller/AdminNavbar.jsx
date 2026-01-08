@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SellerMenu from "./SellerMenu";
 import {
   LayoutDashboard,
   Package,
@@ -16,6 +18,7 @@ import {
 } from "lucide-react";
 
 const SellerNavbar = () => {
+  const navigate = useNavigate()
   const [openMenu, setOpenMenu] = useState(false);
   const [productMenu, setProductMenu] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
@@ -36,7 +39,7 @@ const SellerNavbar = () => {
           </button>
 
           {/* Logo */}
-          <Link to="/seller/dashboard" className="flex items-center gap-2">
+          <Link to="/adminSeller" className="flex items-center gap-2">
             <div className="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">
               Seller
             </div>
@@ -49,33 +52,11 @@ const SellerNavbar = () => {
         {/* CENTER NAV (DESKTOP) */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
 
-          <Link to="/seller/dashboard" className="hover:text-blue-600 flex gap-1">
+          <Link to="/adminSeller/dashboard" className="hover:text-blue-600 flex gap-1">
             <LayoutDashboard size={18} /> Dashboard
           </Link>
 
-          {/* PRODUCTS DROPDOWN */}
-          {/* <div
-            className="relative"
-            onMouseEnter={() => setProductMenu(true)}
-            onClick={() => setProductMenu(false)}
-          >
-            <button className="flex items-center gap-1 hover:text-blue-600">
-              <Package size={18} /> Products <ChevronDown size={16} />
-            </button>
-
-            {productMenu && (
-              <div className="absolute top-8 left-0 w-56 bg-white rounded-xl shadow-lg border">
-                <DropdownLink to="/seller/products">All Products</DropdownLink>
-                <DropdownLink to="/seller/products/men">Men Shoes</DropdownLink>
-                <DropdownLink to="/seller/products/women">Women Shoes</DropdownLink>
-                <DropdownLink to="/seller/products/newlisting">New Listing</DropdownLink>
-             
-                <DropdownLink to="/seller/products/sale" danger>
-                  Sale Products
-                </DropdownLink>
-              </div>
-            )}
-          </div> */}
+          
 
           <Link to="/adminSeller/allproducts" className="hover:text-blue-600 flex gap-1">
             <Package size={18} /> All Products
@@ -92,16 +73,14 @@ const SellerNavbar = () => {
             <Wallet size={18} /> Payments
           </Link>
 
-          <Link to="/seller/analytics" className="hover:text-blue-600 flex gap-1">
-            <BarChart3 size={18} /> Analytics
-          </Link>
+          
         </nav>
 
-        {/* RIGHT */}
-        <div className="flex items-center gap-4">
+        {/* profile */}
+        {/* <div className="flex items-center gap-4">
           <Bell className="w-5 h-5 text-slate-600 cursor-pointer hover:text-blue-600" />
 
-          {/* PROFILE */}
+        
           <div className="relative">
             <button
               onClick={() => setProfileMenu(!profileMenu)}
@@ -115,16 +94,20 @@ const SellerNavbar = () => {
 
             {profileMenu && (
               <div className="absolute right-0 mt-2 w-44 bg-white border rounded-xl shadow-lg">
-                {/* <DropdownLink to="/seller/profile">
-                  Profile
-                </DropdownLink> */}
+                
                 <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                   <LogOut size={16} /> Logout
+                </button>
+                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50" 
+                  onClick={()=> {navigate("/adminSeller/login")}}
+                >
+                  <LogOut size={16} /> Login
                 </button>
               </div>
             )}
           </div>
-        </div>
+        </div> */}
+        <SellerMenu/>
       </div>
 
       {/* ===== MOBILE MENU ===== */}

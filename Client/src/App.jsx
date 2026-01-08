@@ -18,7 +18,8 @@ import OpenAI from './pages/OpenAI.jsx'
 import Login from './user/Login.jsx'
 import Register from './user/Register.jsx'
 import Dashboard from './user/Dashboard.jsx'
-import ProtectRoute from './components/ProtectRoute.jsx'
+import ProtectRoute from './Authorization/ProtectRoute.jsx'
+import ProtectSellerRoute from "./Authorization/ProtectSellerRoute.jsx"
 import Order from './user/Order.jsx'
 import Profile from './user/profile.jsx'
 import Address from './user/Address.jsx'
@@ -28,6 +29,8 @@ import WatchlistCart from './user/WatchlistCart.jsx'
 import AdminSellerLayout from './AdminSellerLayout.jsx'
 import AdminDashboard from './AdminSeller/AdminDashboard.jsx'
 import Products from './AdminSeller/Products.jsx'
+import SellerRegister from "./AdminSeller/Register.jsx"
+import SellerLogin from "./AdminSeller/Login"
 
 
 
@@ -39,6 +42,9 @@ function App() {
    
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/adminSeller/register" element={<SellerRegister/>} />
+          <Route path="/adminSeller/login" element={<SellerLogin/>} />
       
 
      
@@ -69,10 +75,12 @@ function App() {
           <Route path='/account/payment' element={<Payment/>} />
         </Route>
 
-        <Route path='/adminSeller' element={<AdminSellerLayout/>}>
+        <Route path='/adminSeller' element={<ProtectSellerRoute>   <AdminSellerLayout/> </ProtectSellerRoute>    }>
         <Route index element={<AdminDashboard/>}/>
+        <Route path='/adminSeller/dashboard' element={<AdminDashboard/>} />
           <Route path='/adminSeller/productlist' element={<ProductList/>} />
           <Route path='/adminSeller/allproducts' element={<Products/>} />
+          
 
         </Route>
       </Routes>
