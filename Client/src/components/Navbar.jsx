@@ -27,7 +27,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-extrabold tracking-wider"
         >
-          Shoe<span className="text-yellow-400">Verse</span>
+          Prime<span className="text-yellow-400">Walk</span>
         </Link>
 
         {/* Desktop Menu */}

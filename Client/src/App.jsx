@@ -31,6 +31,7 @@ import AdminDashboard from './AdminSeller/AdminDashboard.jsx'
 import Products from './AdminSeller/Products.jsx'
 import SellerRegister from "./AdminSeller/Register.jsx"
 import SellerLogin from "./AdminSeller/Login"
+import AdminOrders from './AdminSeller/Orders.jsx'
 
 
 
@@ -80,6 +81,7 @@ function App() {
         <Route path='/adminSeller/dashboard' element={<AdminDashboard/>} />
           <Route path='/adminSeller/productlist' element={<ProductList/>} />
           <Route path='/adminSeller/allproducts' element={<Products/>} />
+          <Route path='/adminSeller/order' element={<AdminOrders/>} />
           
 
         </Route>

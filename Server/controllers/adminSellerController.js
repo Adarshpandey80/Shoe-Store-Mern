@@ -1,4 +1,5 @@
 const ProductModel = require("../models/productModel")
+const OrderModel = require("../models/orderModel")
 
 const AdminSeller = require("../models/SellerModel")
 const bcrypt = require("bcrypt");
@@ -114,11 +115,22 @@ const showProductsList = async (req, res) => {
   }
 };
 
+const allOrders = async (req,res) =>{
+       try {
+          const Orders = await OrderModel.find({});
+         
+          res.status(201).send(Orders)
+       } catch (error) {
+             res.status(400).send("Order data not found")
+       }
+}
+
 
 
 
  module.exports = {
      showProductsList ,
      registerAdminSeller,
-     loginAdminSeller
+     loginAdminSeller,
+     allOrders
 }

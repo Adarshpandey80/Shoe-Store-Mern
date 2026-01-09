@@ -41,10 +41,10 @@ const SellerNavbar = () => {
           {/* Logo */}
           <Link to="/adminSeller" className="flex items-center gap-2">
             <div className="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">
-              Seller
+              PrimeWalk
             </div>
             <span className="font-semibold text-slate-800 hidden sm:block">
-              Hub Pro
+              Seller
             </span>
           </Link>
         </div>
@@ -65,7 +65,7 @@ const SellerNavbar = () => {
             <ListPlus size={18} /> List Products
           </Link>
 
-          <Link to="/seller/orders" className="hover:text-blue-600 flex gap-1">
+          <Link to="/adminSeller/order" className="hover:text-blue-600 flex gap-1">
             <ShoppingCart size={18} /> Orders
           </Link>
 
@@ -76,44 +76,14 @@ const SellerNavbar = () => {
           
         </nav>
 
-        {/* profile */}
-        {/* <div className="flex items-center gap-4">
-          <Bell className="w-5 h-5 text-slate-600 cursor-pointer hover:text-blue-600" />
-
-        
-          <div className="relative">
-            <button
-              onClick={() => setProfileMenu(!profileMenu)}
-              className="flex items-center gap-2"
-            >
-              <div className="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
-                A
-              </div>
-              <ChevronDown size={16} />
-            </button>
-
-            {profileMenu && (
-              <div className="absolute right-0 mt-2 w-44 bg-white border rounded-xl shadow-lg">
-                
-                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                  <LogOut size={16} /> Logout
-                </button>
-                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50" 
-                  onClick={()=> {navigate("/adminSeller/login")}}
-                >
-                  <LogOut size={16} /> Login
-                </button>
-              </div>
-            )}
-          </div>
-        </div> */}
+       
         <SellerMenu/>
       </div>
 
       {/* ===== MOBILE MENU ===== */}
       {openMenu && (
         <div className="md:hidden bg-white border-t shadow-lg px-5 py-4 space-y-3 text-sm">
-          <MobileLink to="/seller/dashboard">Dashboard</MobileLink>
+          <MobileLink to="//adminSeller/dashboard">Dashboard</MobileLink>
 
           <button
             onClick={() => setProductMenu(!productMenu)}
@@ -124,15 +94,15 @@ const SellerNavbar = () => {
 
           {productMenu && (
             <div className="ml-4 space-y-2 text-slate-600">
-              <MobileLink to="/seller/products">All Products</MobileLink>
-              <MobileLink to="/seller/products/add">Add Product</MobileLink>
-              <MobileLink to="/seller/products/sale">Sale Products</MobileLink>
+              <MobileLink to="/adminSeller/allproducts">All Products</MobileLink>
+              <MobileLink to="/adminSeller/productlist">List Product</MobileLink>
+              {/* <MobileLink to="/seller/products/sale">Sale Products</MobileLink> */}
             </div>
           )}
 
-          <MobileLink to="/seller/orders">Orders</MobileLink>
-          <MobileLink to="/seller/payments">Payments</MobileLink>
-          <MobileLink to="/seller/analytics">Analytics</MobileLink>
+          <MobileLink to="/adminSeller/order">Orders</MobileLink>
+          {/* <MobileLink to="/seller/payments">Payments</MobileLink>
+          <MobileLink to="/seller/analytics">Analytics</MobileLink> */}
         </div>
       )}
     </header>
