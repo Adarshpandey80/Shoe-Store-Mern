@@ -72,6 +72,7 @@ const SellerNavbar = () => {
           <Link to="/seller/payments" className="hover:text-blue-600 flex gap-1">
             <Wallet size={18} /> Payments
           </Link>
+         
 
           
         </nav>

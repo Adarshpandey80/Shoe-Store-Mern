@@ -1,5 +1,7 @@
 const ProductModel = require("../models/productModel")
 const OrderModel = require("../models/orderModel")
+const KycDocument = require("../models/kycModel"); 
+const cloudinary = require("../cloudinary");
 
 const AdminSeller = require("../models/SellerModel")
 const bcrypt = require("bcrypt");
@@ -125,6 +127,67 @@ const allOrders = async (req,res) =>{
        }
 }
 
+const submitSellerKyc = async (req, res) => {
+  try {
+    const sellerId = req.seller.id;
+    const { businessName, panNumber, gstNumber } = req.body;
+
+    // Upload documents to Cloudinary
+    const panUpload = req.files?.panCard
+      ? await cloudinary.uploader.upload(req.files.panCard[0].path, {
+          folder: "seller_kyc/pan",
+        })
+      : null;
+
+    const aadhaarUpload = req.files?.aadhaar
+      ? await cloudinary.uploader.upload(req.files.aadhaar[0].path, {
+          folder: "seller_kyc/aadhaar",
+        })
+      : null;
+
+    // Save KYC Data
+    const kyc = await KycDocument.create({
+      sellerId,
+      businessName,
+      panNumber,
+      gstNumber,
+      documents: {
+        panCard: panUpload?.secure_url,
+        aadhaar: aadhaarUpload?.secure_url,
+      },
+      status: "PENDING", // For KYC requests table
+    });
+
+    // Update seller kycState to Pending
+    const seller = await AdminSeller.findByIdAndUpdate(
+      sellerId,
+      { kycState: "Pending" },
+      { new: true } // optional: returns updated document
+    );
+
+    res.status(201).json({
+      message: "KYC submitted successfully. Await admin approval.",
+      kyc,
+      seller,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "KYC submission failed",
+      error: error.message,
+    });
+  }
+};
+
+const isVerifyed = async (req,res) =>{
+  try {
+    const {id} = req.params
+    const seller = await AdminSeller.findById(id)
+    res.status(201).send(seller)
+  } catch (error) {
+     res.status(400).send( "seller data not found ")
+  }
+}
 
 
 
@@ -132,5 +195,7 @@ const allOrders = async (req,res) =>{
      showProductsList ,
      registerAdminSeller,
      loginAdminSeller,
-     allOrders
+     allOrders,
+     submitSellerKyc,
+     isVerifyed
 }

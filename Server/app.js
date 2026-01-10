@@ -8,6 +8,8 @@ const paymentRoute = require('./routes/paymentRoute');
 const aiRoute = require('./routes/airoute');
 const userRoute = require('./routes/userRoute');
 const adminRoute = require("./routes/adminSellerRoute")
+const superadminroute = require("./routes/superAdminRoute")
+
 
 require('dotenv').config();
 
@@ -27,7 +29,7 @@ app.use("/products" , Productroute)
 app.use('/payment', paymentRoute);
 app.use("/user" , userRoute);
 app.use("/admin" , adminRoute)
-
+app.use("/superadmin" , superadminroute)
     
 
 

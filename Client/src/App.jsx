@@ -32,6 +32,10 @@ import Products from './AdminSeller/Products.jsx'
 import SellerRegister from "./AdminSeller/Register.jsx"
 import SellerLogin from "./AdminSeller/Login"
 import AdminOrders from './AdminSeller/Orders.jsx'
+import SuperAdminLayout from './SuperAdminLayout.jsx'
+import SuperAdminDashboard from './SuperAdmin/SuperAdminDashboard.jsx'
+import KycRequest from './SuperAdmin/KycRequest.jsx'
+import SellerKYC from './AdminSeller/SellerKYC.jsx'
 
 
 
@@ -82,8 +86,13 @@ function App() {
           <Route path='/adminSeller/productlist' element={<ProductList/>} />
           <Route path='/adminSeller/allproducts' element={<Products/>} />
           <Route path='/adminSeller/order' element={<AdminOrders/>} />
-          
+          <Route path='/adminSeller/kyc' element={<SellerKYC/>} />
+        </Route>
 
+        <Route path='/superadmin' element={<SuperAdminLayout/>}> 
+         <Route index element={<SuperAdminDashboard/>}/>
+        <Route path='/superadmin/dashboard' element={<SuperAdminDashboard/>} />
+        <Route path='/superadmin/kycrequist' element={<KycRequest/>} />
         </Route>
       </Routes>
 

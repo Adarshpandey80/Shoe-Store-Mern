@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify'
 
 function ProductList() {
   const navigate = useNavigate()
@@ -42,20 +43,41 @@ function ProductList() {
     }
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let api = 'http://localhost:8000/products/listProducts';
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const api = "http://localhost:8000/products/listProducts";
+
+const token = localStorage.getItem("sellertoken");
+
     let formData = new FormData();
+
     for (let key in product) {
       formData.append(key, product[key]);
     }
-    for (let i = 0; i < images.length; i++) {
-      formData.append('images', images[i]);
-    }
-    const response = await axios.post(api, formData);
-    console.log(response);
 
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
+
+    const response = await axios.post(api, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success(response.data)
+    navigate("/adminSeller/dashboard")
+  } catch (error) {
+    if (error.response?.data?.message === "KYC_NOT_VERIFIED") {
+      toast.error("Complete your KYC Frist" , {position : "top-center"})
+      navigate("/adminSeller/kyc");
+    } else {
+      console.error(error);
+    }
   }
+};
+
 
   return (
     <>

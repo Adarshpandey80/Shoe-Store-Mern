@@ -1,9 +1,11 @@
 const express = require("express")
 const route = express.Router();
 const productController = require("../controllers/productController")
+const sellerAuth = require("../middleware/auth")
+const checkKyc = require("../middleware/checkKyc")
 
 
-route.post("/listProducts" , productController.addProducts)
+route.post("/listProducts" , sellerAuth, checkKyc , productController.addProducts)
 route.get("/showProducts" , productController.showProductsList)
 route.get("/mensproducts", productController.getMensProducts);
 route.get("/womenProducts", productController.getWomenProducts);

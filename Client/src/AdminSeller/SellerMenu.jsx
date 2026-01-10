@@ -8,8 +8,6 @@ function SellerMenu() {
       const navigate = useNavigate();
         const isLoggedIn = !!localStorage.getItem("sellertoken");
 
-
-
        const handleLogout = () => {
     localStorage.removeItem("sellertoken");
     localStorage.removeItem("sellerInfo");
@@ -39,13 +37,13 @@ function SellerMenu() {
             </Link>
           ) : (
             <>
-              {/* <Link
-                to="/account"
+              <Link
+                to="/adminSeller/kyc"
                 className="block px-4 py-2 hover:bg-gray-100"
                 onClick={() => setOpen(false)}
               >
-                Profile
-              </Link> */}
+                KYC
+              </Link>
 
               <button
                 onClick={handleLogout}

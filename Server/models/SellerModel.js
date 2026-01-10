@@ -62,6 +62,12 @@ const adminSellerSchema = new mongoose.Schema(
       default: false, // after admin approval / KYC
     },
 
+    kycState: {
+      type: String,
+      enum: [ "Notapplyed" ,"Pending", "Approved", "Rejected"],
+      default: "Notapplyed"
+    },
+
     isActive: {
       type: Boolean,
       default: true,

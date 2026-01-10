@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from "react-toastify"
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({});
   const [terms, setTerms] = useState(false)
@@ -36,7 +38,7 @@ function Register() {
 
      toast.success(response.data.message , {position:"top-center"})
       console.log(response.data);
-
+       navigate("/adminSeller/login")
     } catch (error) {
       if (error.response) {
         alert(error.response.data.message);
@@ -46,8 +48,7 @@ function Register() {
     }
   };
 
-  console.log(formData)
-  console.log(terms)
+
 
 
   return (
